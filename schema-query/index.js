@@ -6,21 +6,24 @@ const usuarios = [
         nome: 'renato',
         email: 'renato@teste',
         idade: 50,
-        perfil_id: 2
+        perfil_id: 2,
+        status: 'ATIVO'
     },
     {
         id: 2,
         nome: 'marcio',
         email: 'marcio@teste',
         idade: 51,
-        perfil_id: 1
+        perfil_id: 1,
+        status: 'INATIVO'
     },
     {
         id: 3,
         nome: 'silva',
         email: 'silva@teste',
         idade: 52,
-        perfil_id: 1
+        perfil_id: 1,
+        status: 'BLOQUEADO'
     }
 ]
 
@@ -54,6 +57,7 @@ const typeDefs = gql`
         vip: Boolean
         nomeMaisIdade: String
         perfil: Perfil
+        status: UsuarioStatus
     }
 
     type Perfil {
@@ -73,6 +77,13 @@ const typeDefs = gql`
         perfis: [Perfil]
         perfil(id: Int): Perfil
     }
+
+    enum UsuarioStatus {
+        ATIVO,
+        INATIVO,
+        BLOQUEADO
+    }
+
 `
 const resolvers = {
     Usuario: {
