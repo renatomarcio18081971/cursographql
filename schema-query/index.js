@@ -1,23 +1,36 @@
 const { ApolloServer, gql } = require('apollo-server')
 
-const usuarios = [{
-    id: 1,
-    nome: 'renato',
-    email: 'renato@teste',
-    idade: 50
-},
-{
-    id: 2,
-    nome: 'marcio',
-    email: 'marcio@teste',
-    idade: 51
-},
-{
-    id: 3,
-    nome: 'silva',
-    email: 'silva@teste',
-    idade: 52
-}]
+const usuarios = [
+    {
+        id: 1,
+        nome: 'renato',
+        email: 'renato@teste',
+        idade: 50
+    },
+    {
+        id: 2,
+        nome: 'marcio',
+        email: 'marcio@teste',
+        idade: 51
+    },
+    {
+        id: 3,
+        nome: 'silva',
+        email: 'silva@teste',
+        idade: 52
+    }
+]
+
+const perfis = [
+    {
+        id: 1,
+        nome: 'comum'
+    },
+    {
+        id: 2,
+        nome: 'administrador'
+    }
+]
 
 const typeDefs = gql`
     scalar Date
@@ -39,6 +52,11 @@ const typeDefs = gql`
         nomeMaisIdade: String
     }
 
+    type Perfil {
+        id: Int!
+        nome: String!
+    }
+
     #ponto de entrada da consulta
     type Query {
         ola: String!
@@ -48,6 +66,8 @@ const typeDefs = gql`
         numeroMegaSena: [Int]!
         usuarios: [Usuario]!
         usuario(id: Int): Usuario
+        perfis: [Perfil]
+        perfil(id: Int): Perfil
     }
 `
 const resolvers = {
@@ -97,6 +117,13 @@ const resolvers = {
         },
         usuario(_, { id }){
             const selecao = usuarios.filter( a => a.id === id)
+            return selecao ? selecao[0] : null
+        },
+        perfis() {
+            return perfis
+        },
+        perfil(_, { id }){
+            const selecao = perfis.filter(a => a.id === id)
             return selecao ? selecao[0] : null
         }
     }
