@@ -1,8 +1,13 @@
 const { ApolloServer, gql } = require('apollo-server')
 const typeDefs = gql`
-    #ponto de entrada da consulta
-
     scalar Date
+
+    type Produto {
+        nome: String!
+        preco: Float!
+        desconto: Float
+        precoComDesconto: Float
+    }
 
     type Usuario {
         id: ID!
@@ -14,17 +19,12 @@ const typeDefs = gql`
         nomeMaisIdade: String
     }
 
-    type Produto {
-        nome: String!
-        preco: Float!
-        desconto: Int
-        precoComDesconto: Float
-    }
-
+    #ponto de entrada da consulta
     type Query {
         ola: String!
         horaCerta: Date!
         usuarioLogado: Usuario
+        produtoEmDestaque: Produto
     }
 `
 const resolvers = {
@@ -36,6 +36,11 @@ const resolvers = {
             return usuario.nome + ' - ' + usuario.idade
         }
     },
+    Produto: {
+        precoComDesconto(produto){
+            return produto.preco - ((produto.preco * produto.desconto) / 100)
+        }
+    },
     Query: {
         ola(){
             return 'Bom dia !!!!'
@@ -43,7 +48,6 @@ const resolvers = {
         horaCerta() {
             var agora = new Date()
             return `${new Date()}`
-            //return agora.getHours().toString() + ':' + agora.getMinutes().toString() + ':' + agora.getSeconds().toString()
         },
         usuarioLogado() {
             return {
