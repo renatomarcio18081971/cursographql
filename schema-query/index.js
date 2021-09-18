@@ -5,19 +5,22 @@ const usuarios = [
         id: 1,
         nome: 'renato',
         email: 'renato@teste',
-        idade: 50
+        idade: 50,
+        perfil_id: 2
     },
     {
         id: 2,
         nome: 'marcio',
         email: 'marcio@teste',
-        idade: 51
+        idade: 51,
+        perfil_id: 1
     },
     {
         id: 3,
         nome: 'silva',
         email: 'silva@teste',
-        idade: 52
+        idade: 52,
+        perfil_id: 1
     }
 ]
 
@@ -50,6 +53,7 @@ const typeDefs = gql`
         salario: Float
         vip: Boolean
         nomeMaisIdade: String
+        perfil: Perfil
     }
 
     type Perfil {
@@ -77,6 +81,10 @@ const resolvers = {
         },
         nomeMaisIdade(usuario){
             return usuario.nome + ' - ' + usuario.idade
+        },
+        perfil(usuario){
+            const selecao = perfis.filter(a => a.id === usuario.perfil_id)
+            return selecao ? selecao[0] : null
         }
     },
     Produto: {
