@@ -1,4 +1,24 @@
 const { ApolloServer, gql } = require('apollo-server')
+
+const usuarios = [{
+    id: 1,
+    nome: 'renato',
+    email: 'renato@teste',
+    idade: 50
+},
+{
+    id: 2,
+    nome: 'marcio',
+    email: 'marcio@teste',
+    idade: 51
+},
+{
+    id: 3,
+    nome: 'silva',
+    email: 'silva@teste',
+    idade: 52
+}]
+
 const typeDefs = gql`
     scalar Date
 
@@ -10,7 +30,7 @@ const typeDefs = gql`
     }
 
     type Usuario {
-        id: ID!
+        id: Int
         nome: String!
         email: String!
         idade: Int
@@ -25,6 +45,9 @@ const typeDefs = gql`
         horaCerta: Date!
         usuarioLogado: Usuario
         produtoEmDestaque: Produto
+        numeroMegaSena: [Int]!
+        usuarios: [Usuario]!
+        usuario(id: Int): Usuario
     }
 `
 const resolvers = {
@@ -62,9 +85,19 @@ const resolvers = {
         produtoEmDestaque() {
             return {
                 nome: "Guarana",
-                preco: 25.50,
+                preco: 35.50,
                 desconto: 10
             }
+        },
+        numeroMegaSena() {
+            return [10, 20, 30, 40, 50, 60]
+        },
+        usuarios() {
+            return usuarios
+        },
+        usuario(_, { id }){
+            const selecao = usuarios.filter( a => a.id === id)
+            return selecao ? selecao[0] : null
         }
     }
 }
